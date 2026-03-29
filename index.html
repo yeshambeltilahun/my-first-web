@@ -6,16 +6,21 @@
     <title>For My Love</title>
     <style>
         body { margin: 0; background: #050505; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        #intro { text-align: center; transition: opacity 1s ease; }
+        #intro { text-align: center; transition: opacity 1s ease; z-index: 10; }
         h1 { font-size: 2.5rem; text-shadow: 0 0 20px #ff0055; margin-bottom: 20px; padding: 0 10px; }
-        .start-btn { padding: 15px 40px; font-size: 1.2rem; background: transparent; color: gold; border: 2px solid gold; border-radius: 50px; cursor: pointer; transition: 0.3s; box-shadow: 0 0 15px gold; }
-        .start-btn:hover { background: gold; color: black; }
+        .start-btn { padding: 15px 40px; font-size: 1.2rem; background: transparent; color: gold; border: 2px solid gold; border-radius: 50px; cursor: pointer; transition: 0.3s; box-shadow: 0 0 15px gold; font-weight: bold; }
+        .start-btn:hover { background: gold; color: black; transform: scale(1.05); }
         #universe { display: none; width: 100vw; height: 100vh; position: relative; background: radial-gradient(circle, #1a1a2e, #000); }
-        .planet { position: absolute; border-radius: 50%; background-size: cover; background-position: center; border: 2px solid rgba(255, 215, 0, 0.5); box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); cursor: pointer; }
+        .planet { position: absolute; border-radius: 50%; background-size: cover; background-position: center; border: 2px solid rgba(255, 215, 0, 0.6); box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); }
         .orbit { position: absolute; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); }
     </style>
 </head>
 <body>
+
+    <!-- ሙዚቃውን የሚከፍተው ክፍል -->
+    <audio id="myAudio" loop>
+      <source src="music.mp3" type="audio/mpeg">
+    </audio>
 
     <div id="intro">
         <h1>የኔ ብርታት I love you</h1>
@@ -25,7 +30,7 @@
     <div id="universe"></div>
 
     <script>
-        // GitHub ላይ የጫንካቸው የፎቶ ስሞች በትክክል እዚህ ተቀምጠዋል
+        // የፎቶዎች ዝርዝር
         const photos = [
             '1,eshe.png',
             '2,eshe .png',
@@ -36,7 +41,13 @@
         ];
 
         function startSurprise() {
+            // 1. ሙዚቃውን ያስጀምራል
+            const audio = document.getElementById('myAudio');
+            audio.play().catch(e => console.log("Audio play failed:", e));
+
+            // 2. የመግቢያ ጽሁፉን ያጠፋል
             document.getElementById('intro').style.opacity = '0';
+            
             setTimeout(() => {
                 document.getElementById('intro').style.display = 'none';
                 document.getElementById('universe').style.display = 'block';
@@ -50,7 +61,7 @@
             const centerY = window.innerHeight / 2;
 
             photos.forEach((photo, i) => {
-                const orbitSize = (i + 1) * 110; // ክፍተቱን ትንሽ ጠበብ አድርጌዋለሁ ለሞባይል እንዲመች
+                const orbitSize = (i + 1) * 110; 
                 const orbit = document.createElement('div');
                 orbit.className = 'orbit';
                 orbit.style.width = orbitSize + 'px';
@@ -59,15 +70,15 @@
 
                 const planet = document.createElement('div');
                 planet.className = 'planet';
-                planet.style.width = '70px';
-                planet.style.height = '70px';
+                planet.style.width = '75px';
+                planet.style.height = '75px';
                 planet.style.backgroundImage = `url('${photo}')`;
                 
                 let angle = (i * (360 / photos.length)); 
                 setInterval(() => {
                     angle += 0.005;
-                    const x = centerX + (orbitSize / 2) * Math.cos(angle) - 35;
-                    const y = centerY + (orbitSize / 2) * Math.sin(angle) - 35;
+                    const x = centerX + (orbitSize / 2) * Math.cos(angle) - 37.5;
+                    const y = centerY + (orbitSize / 2) * Math.sin(angle) - 37.5;
                     planet.style.left = x + 'px';
                     planet.style.top = y + 'px';
                 }, 16);
